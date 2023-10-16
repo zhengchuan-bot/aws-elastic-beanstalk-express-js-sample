@@ -20,14 +20,5 @@ pipeline {
                 }
             }
         }
-        stage('Git Push') {
-            steps {
-                dir('aws-elastic-beanstalk-express-js-sample') {
-                    sh 'git add .' // Stage changes
-                    sh 'git commit -m "Jenkins build"' // Commit changes
-                    sh 'git push' // Push changes
-                }
-            }
-        }
     }
 }
