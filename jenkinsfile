@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                    withCredentials([usernamePassword(usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                         checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'https://github.com/zhengchuan-bot/aws-elastic-beanstalk-express-js-sample']]])
                     }
                 }
