@@ -1,32 +1,31 @@
 pipeline {
     agent {
-            docker { image 'node:16-alpine' } // Use Node 16 Docker image as the build agent
-    }
-    environment {
-        GIT_USER = '1289304464@qq.com' // GitHub username
-        GIT_PASS = '1289304464chuan' // GitHub password 
+        docker {
+            image 'node:16-alpine' // Use Node 16 Docker image as the build agent
+        }
     }
     stages {
         stage('Checkout') {
             steps {
                 script {
-                    withCredentials([usernamePassword(usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
-                        checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'https://github.com/zhengchuan-bot/aws-elastic-beanstalk-express-js-sample']]])
-                    }
+                    // Clone the GitHub repository
+                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/zhengchuan-bot/aws-elastic-beanstalk-express-js-sample']]])
                 }
             }
         }
         stage('Build') {
             steps {
-                sh 'npm install --save' // Run the npm install command
+                dir('aws-elastic-beanstalk-express-js-sample') {
+                    sh 'npm install --save' // Run the npm install command
+                }
             }
         }
         stage('Git Push') {
             steps {
-                sh 'git add .' // Stage changes
-                sh 'git commit -m "Jenkins build"' 
-                withCredentials([usernamePassword(usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
-                    sh 'git push' 
+                dir('aws-elastic-beanstalk-express-js-sample') {
+                    sh 'git add .' // Stage changes
+                    sh 'git commit -m "Jenkins build"' // Commit changes
+                    sh 'git push' // Push changes
                 }
             }
         }
