@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sh 'git add .' // Stage changes
                 sh 'git commit -m "Jenkins build"' 
-                withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                withCredentials([usernamePassword(usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh 'git push' 
                 }
             }
